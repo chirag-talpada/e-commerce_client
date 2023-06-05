@@ -19,3 +19,12 @@ export const signUpShema = yup.object().shape({
         return true;
     })
 });
+
+export const signInSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email()
+    .required('must be required!'),
+
+    password:yup.string().required('must be required!'),
+});
