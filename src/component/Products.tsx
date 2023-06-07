@@ -27,6 +27,7 @@ const Products = () => {
                       img={data.image_url}
                       name={data.name}
                       price={data.price}
+                      productID={data.id}
                       key={index}
                     />
                   );

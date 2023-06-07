@@ -1,13 +1,28 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { Link } from "react-router-dom";
 import "./style/Navbar.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import { updateUser } from "../redux/userSlice";
+import { resetCart } from "../redux/cartSlice";
+import Cart from "./Cart";
 // import Cart from "../Cart/Cart";
 // import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const products = [];
+
+  const { user, cart } = useSelector((state: RootState) => {
+    return state;
+  });
+  const dispacth: AppDispatch = useDispatch();
+
+  const onLogout = () => {
+    localStorage.removeItem("userData");
+    dispacth(resetCart({}));
+    dispacth(updateUser({ name: "", isLoggedIn: false }));
+  };
 
   return (
     <div className="navbar bg-blue-700 text-white sticky top-0">
@@ -18,28 +33,41 @@ const Navbar = () => {
               ShopMart
             </Link>
           </div>
+          <span className="ml-60">{user.username && `Welcome, ${user.username}`}</span>
         </div>
         <div className="right">
-          <div className="item">
-            <Link className="link" to="/">
-              Login
-            </Link>
-          </div>
-          <div className="item">
-            <Link className="link" to="/">
-              Register
-            </Link>
-          </div>
-
+          {user && !user.isLoggedIn && (
+            <Fragment>
+              <div className="item">
+                <Link className="link" to="/signin">
+                  Login
+                </Link>
+              </div>
+              <div className="item">
+                <Link className="link" to="/signup">
+                  Register
+                </Link>
+              </div>
+            </Fragment>
+          )}
+          {user && user.isLoggedIn && (
+            <div>
+              <div className="item">
+                <span className="link cursor-pointer" onClick={onLogout}>
+                  logout
+                </span>
+              </div>
+            </div>
+          )}
           <div className="icons">
             <div className="cartIcon text-white" onClick={() => setOpen(!open)}>
               <ShoppingCartOutlinedIcon />
-              <span>{products.length}</span>
+              <span>{cart !== undefined && cart.items.length}</span>
             </div>
           </div>
         </div>
       </div>
-      {/* {open && <Cart/>} */}
+      {open && <Cart onCloseModel={setOpen} />}
     </div>
   );
 };

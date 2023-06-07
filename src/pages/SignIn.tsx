@@ -5,6 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { signInSchema } from "./validationShema";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../redux/userSlice";
+import { getCartProducts } from "../redux/cartSlice";
+import { AppDispatch } from "../redux/store";
 
 const SignIn = () => {
   const {
@@ -16,6 +20,7 @@ const SignIn = () => {
   });
 
   const navigate=useNavigate();
+  const dispatch:AppDispatch=useDispatch();
 
   useEffect(()=>{
     if(localStorage.getItem('userData')){
@@ -34,6 +39,8 @@ const SignIn = () => {
       if (res.data.status === "success") {
         toast.success(res.data.message);
         localStorage.setItem('userData',JSON.stringify(res.data.data))
+        dispatch(getCartProducts())
+        dispatch(updateUser({name:res.data.data.name,isLoggedIn:true}))
         navigate('/')
       }
 
