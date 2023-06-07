@@ -10,7 +10,7 @@ const Navbar = () => {
   const products = [];
 
   return (
-    <div className="navbar bg-blue-700 text-white">
+    <div className="navbar bg-blue-700 text-white sticky top-0">
       <div className="wrapper">
         <div className="left">
           <div className="center">

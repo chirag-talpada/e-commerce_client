@@ -28,6 +28,35 @@
   color: #61dafb;
 }
 
+.product-container{
+  padding-bottom: 15px;
+}
+
+.product-container::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  
+}
+.product-container::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background-color: #f5f5f5;
+  
+  
+}
+.product-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.44, rgba(34, 99, 230, 0.425)),
+    color-stop(0.72, rgba(28, 64, 109, 0.514)),
+    color-stop(0.86, rgba(28, 58, 148, 0.473))
+  );
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
