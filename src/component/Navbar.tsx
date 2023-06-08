@@ -10,7 +10,11 @@ import Cart from "./Cart";
 // import Cart from "../Cart/Cart";
 // import { useSelector } from "react-redux";
 
-const Navbar = () => {
+type props={
+  isDisabled:boolean
+}
+
+const Navbar = ({isDisabled}:props) => {
   const [open, setOpen] = useState(false);
 
   const { user, cart } = useSelector((state: RootState) => {
@@ -33,10 +37,10 @@ const Navbar = () => {
               ShopMart
             </Link>
           </div>
-          <span className="ml-60">{user.username && `Welcome, ${user.username}`}</span>
+          {!isDisabled && <span className="ml-60">{user.username && `Welcome, ${user.username}`}</span>}
         </div>
         <div className="right">
-          {user && !user.isLoggedIn && (
+          {user && !user.isLoggedIn && !isDisabled && (
             <Fragment>
               <div className="item">
                 <Link className="link" to="/signin">
@@ -50,7 +54,7 @@ const Navbar = () => {
               </div>
             </Fragment>
           )}
-          {user && user.isLoggedIn && (
+          {user && user.isLoggedIn && !isDisabled && (
             <div>
               <div className="item">
                 <span className="link cursor-pointer" onClick={onLogout}>
@@ -59,12 +63,12 @@ const Navbar = () => {
               </div>
             </div>
           )}
-          <div className="icons">
+         {!isDisabled && <div className="icons">
             <div className="cartIcon text-white" onClick={() => setOpen(!open)}>
               <ShoppingCartOutlinedIcon />
-              <span>{cart !== undefined && cart.items.length}</span>
+              <span>{cart !== undefined && cart.items?.length}</span>
             </div>
-          </div>
+          </div>}
         </div>
       </div>
       {open && <Cart onCloseModel={setOpen} />}

@@ -10,6 +10,9 @@ import "react-toastify/dist/ReactToastify.css";
 import UserPage from "./pages/UserPage";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import Order from "./pages/Order";
+import Address from "./component/Address";
+import Summery from "./component/Summery";
 
 function App() {
   return (
@@ -22,6 +25,12 @@ function App() {
 
           {/* <Route path="/" element={<AuthGuard Component={UserPage} />}></Route> */}
           <Route path="/" element={<UserPage/>}></Route>
+          
+          <Route path="/order" element={<Order/>}>
+            <Route path="address" element={<Address/>} />
+            <Route path="summery" element={<Summery/>}/>
+            <Route path="payment" element={<h1>payment</h1>}/>
+          </Route>
 
 
           <Route path="*" element={<NotFound />}></Route>

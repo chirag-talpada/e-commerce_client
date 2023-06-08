@@ -7,7 +7,9 @@ type item={
   image_url:string,
   name:string,
   price:number,
-  quantity:number,
+  cart_products:{
+    quantity:number,
+  }
 }
 
 type cart={
@@ -64,6 +66,25 @@ export const getCartProducts = createAsyncThunk ("cart/getCartProducts", async (
   }
 });
 
+export const deleteCartItem = createAsyncThunk("cart/deleteProduct", async (product_id:number) => {
+  try {
+    const { data } = await axios.delete(`${process.env.REACT_APP_BASE_URL}/cart/delete/${product_id}`);
+
+    if(data.status==="success"){
+      toast.success(data.message)
+    }
+    
+    return data.data;
+    
+  } catch (err) {
+    if(axios.isAxiosError(err)){
+      toast.error(err.response?.data.message)
+    }
+    console.log(err);
+    return err;
+  }
+});
+
 
 const cartSlice = createSlice({
   name: "cart",
@@ -100,6 +121,22 @@ const cartSlice = createSlice({
       }
     });
     builder.addCase(getCartProducts.rejected, (state, action) => {
+      console.log(action.error.message);
+    });
+   
+    builder.addCase(deleteCartItem.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteCartItem.fulfilled, (state, action) => {
+      if(action.payload){
+        state.items=state.items.filter(product=>product.id!==action.payload); 
+        state.total=state.items.reduce((cur,acc)=>{
+          return cur+(acc.price*acc.cart_products.quantity)
+        },0)
+        state.loading = false;
+      }
+    });
+    builder.addCase(deleteCartItem.rejected, (state, action) => {
       console.log(action.error.message);
     });
   },

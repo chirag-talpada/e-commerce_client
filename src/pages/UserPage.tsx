@@ -22,7 +22,7 @@ const UserPage = () => {
 
   return (
     <div>
-        <Navbar/>
+        <Navbar isDisabled={false} />
         <Products/>
     </div>
   )
