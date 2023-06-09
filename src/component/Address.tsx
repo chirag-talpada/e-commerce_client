@@ -22,7 +22,8 @@ const Address = () => {
     if(!location.state?.isCheckout){
       navigate('/')
     }
-  },[location.state?.isCheckout, navigate])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   const submitHandler = (data: FieldValues) => {
     navigate("/order/summery", { state: { data, isAddressProvided: true,isCheckout:true } });

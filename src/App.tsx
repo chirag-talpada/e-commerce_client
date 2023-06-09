@@ -13,6 +13,9 @@ import store from "./redux/store";
 import Order from "./pages/Order";
 import Address from "./component/Address";
 import Summery from "./component/Summery";
+import Payment from "./component/Payment";
+import AuthGuard from "./component/AuthGaurd";
+import MyOrder from "./pages/MyOrder";
 
 function App() {
   return (
@@ -23,14 +26,15 @@ function App() {
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
 
-          {/* <Route path="/" element={<AuthGuard Component={UserPage} />}></Route> */}
+          <Route path="/user/order" element={<AuthGuard Component={MyOrder} />}></Route>
           <Route path="/" element={<UserPage/>}></Route>
           
-          <Route path="/order" element={<Order/>}>
+          <Route path="/order" element={ <AuthGuard Component={Order} />}>
             <Route path="address" element={<Address/>} />
             <Route path="summery" element={<Summery/>}/>
-            <Route path="payment" element={<h1>payment</h1>}/>
+            <Route path="payment" element={<Payment/>}/>
           </Route>
+
 
 
           <Route path="*" element={<NotFound />}></Route>

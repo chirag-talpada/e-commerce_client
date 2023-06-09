@@ -85,3 +85,10 @@
   width: 160px;
 }
 
+.processing{
+  color: orangered;
+  background: rgb(240, 187, 169);
+  padding: 7px 12px;
+  font-weight: 700;
+  border-radius: 20px;
+}

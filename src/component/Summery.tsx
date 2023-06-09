@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BsCurrencyRupee } from "react-icons/bs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { RootState } from "../redux/store";
+import { AppDispatch, RootState } from "../redux/store";
+import { getCartProducts } from "../redux/cartSlice";
 
-type addressType = {
+export type addressType = {
   address1: string;
   address2: string;
   city: string;
@@ -20,22 +21,48 @@ const Summery = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch:AppDispatch=useDispatch();
 
   const { cart } = useSelector((state: RootState) => {
     return state;
   });
 
+  const { user:appUser } = useSelector((state: RootState) => {
+    return state;
+  });
+
+  const placeOrder=()=>{
+    navigate('/order/payment',{
+      state:{
+        isCheckout:true,
+        isAddressProvided: true,
+        data:location.state.data
+      }
+    })
+  }
+
+  useEffect(()=>{
+    
+    if(appUser.isLoggedIn){
+      dispatch(getCartProducts())
+    }
+  },[dispatch, appUser.isLoggedIn]);
+
+
+
   useEffect(() => {
     if (!location.state?.isCheckout || !location.state?.isAddressProvided) {
       navigate("/");
     }
-    setAddress(location.state.data);
+    if(location.state?.data){
+      setAddress(location.state.data);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.state?.isAddressProvided, location.state?.isCheckout, navigate]);
+  }, []);
 
   return (
-    <div className="display-box rounded-md p-7 m-5 mt-8">
+    <div className="display-box rounded-md p-7 m-5 my-8">
       <div className="uppercase font-medium text-lg border-b-2 pb-3">
         Order Summary
       </div>
@@ -95,9 +122,9 @@ const Summery = () => {
         <div className="font-medium mb-4">Order items</div>
 
         {cart.items &&
-          cart.items.map((item) => {
+          cart.items.map((item,index) => {
             return (
-              <div className="flex bg-gray-300 rounded-md h-36 p-4 mb-3">
+              <div key={index} className="flex bg-gray-300 rounded-md h-36 p-4 mb-3">
                 <div className="w-48">
                   <img
                     className="h-full w-full object-contain"
@@ -120,7 +147,15 @@ const Summery = () => {
             );
           })}
       </div>
+      
+      <div className="flex items-center m-5 text-2xl font-medium pl-3">
+        Total Amount : {cart?.total && cart.total}
+        <BsCurrencyRupee />
+      </div>
 
+      <div>
+        <button onClick={placeOrder} className="uppercase bg-orange-500 px-20 py-2 rounded-xl text-white cursor-pointer font-medium border-b-2 border-orange-700">Place an Order</button>
+      </div>
 
 
     </div>
