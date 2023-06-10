@@ -16,15 +16,19 @@ import Summery from "./component/Summery";
 import Payment from "./component/Payment";
 import AuthGuard from "./component/AuthGaurd";
 import MyOrder from "./pages/MyOrder";
+import ProductPage from "./pages/ProductPage";
+import ProductByCategory from "./pages/ProductByCategory";
 
 function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <ToastContainer />
+        <ToastContainer position="bottom-center" theme="dark" />
         <Routes>
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/product/:id" element={<ProductPage />}></Route>
+          <Route path="/category/:name" element={<ProductByCategory />}></Route>
 
           <Route path="/user/order" element={<AuthGuard Component={MyOrder} />}></Route>
           <Route path="/" element={<UserPage/>}></Route>

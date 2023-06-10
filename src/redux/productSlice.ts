@@ -14,7 +14,7 @@ type sellersType={
   seller_product:sellerProductType
 }
 
-type productData={
+export type productData={
   categories:categoriesType[],
   desc:string,
   id:number,

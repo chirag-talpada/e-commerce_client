@@ -85,10 +85,28 @@
   width: 160px;
 }
 
-.processing{
-  color: orangered;
-  background: rgb(240, 187, 169);
+.order-status-label{
   padding: 7px 12px;
   font-weight: 700;
   border-radius: 20px;
+}
+
+.processing{
+  color: orangered;
+  background: rgb(240, 187, 169);
+}
+
+.canceled{
+  color: rgb(223, 65, 65);
+  background: rgb(238, 155, 155);
+}
+
+.completed{
+  color: rgb(46, 114, 20);
+  background: rgb(152, 240, 157);
+}
+
+.pending{
+  color: rgb(90, 88, 88);
+  background: rgb(187, 184, 184);
 }

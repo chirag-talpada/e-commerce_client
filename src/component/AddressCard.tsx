@@ -21,26 +21,26 @@ const AddressCard = ({closeAddressModel,address}:props) => {
       <table className="user-table">
         <tbody>
           <tr>
-            <td>Address line 1</td>
-            <td>: {address?.address1}</td>
+            <td>Address line 1 :</td>
+            <td> {address?.address1}</td>
           </tr>
           {address?.address2 !== "" && (
             <tr>
-              <td>Address line 2</td>
-              <td>{`: ${address?.address2}`}</td>
+              <td>Address line 2 :</td>
+              <td>{`${address?.address2}`}</td>
             </tr>
           )}
           <tr>
-            <td>Country</td>
-            <td>: {address?.country}</td>
+            <td>Country :</td>
+            <td>{address?.country}</td>
           </tr>
           <tr>
-            <td>City</td>
-            <td>: {address?.city}</td>
+            <td>City :</td>
+            <td>{address?.city}</td>
           </tr>
           <tr>
-            <td>Pincode</td>
-            <td>: {address?.pincode}</td>
+            <td>Pincode :</td>
+            <td>{address?.pincode}</td>
           </tr>
         </tbody>
       </table>

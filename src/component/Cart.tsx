@@ -51,8 +51,16 @@ const Cart = ({ onCloseModel }: props) => {
         dispatch(getCartProducts());
       }
     } catch (err) {
+      console.log(err);
+      
       if (axios.isAxiosError(err)) {
         toast.error(err.response?.data.message);
+
+        if(err.response?.data.status==="remove"){
+          let pid=err.response?.data.data;
+          dispatch(deleteCartItem(pid));
+        }
+
       }
     }
   };

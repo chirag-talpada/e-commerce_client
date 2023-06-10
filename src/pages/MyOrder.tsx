@@ -4,6 +4,8 @@ import axios from "axios";
 import Model from "../component/Model";
 import { addressType } from "../component/Summery";
 import AddressCard from "../component/AddressCard";
+import ItemsCard from "../component/ItemsCard";
+import { getLocaleDate, getRs } from "../helper";
 
 type orderType = {
   id: number;
@@ -16,6 +18,11 @@ type orderType = {
 type addressModelType = {
   isOpen: boolean;
   address: addressType;
+};
+
+type itemsModelType = {
+  isOpen: boolean;
+  orderID: number;
 };
 
 const IntialAddress = {
@@ -33,30 +40,39 @@ const MyOrder = () => {
     address: IntialAddress,
   });
 
+  const [orderItemsModel, setOrderItemsModel] = useState<itemsModelType>();
+
   useEffect(() => {
     async function init() {
-      try {
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/order/get`
-        );
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/order/get`
+      );
 
-        if (data.status === "success") {
-          setOrderData(data.data);
-        }
-      } catch (err) {
-        console.log(err);
+      if (data.status === "success") {
+        setOrderData(data.data);
       }
     }
 
-    init();
+    try {
+      init();
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
-  const closeAddressModel=()=>{
+  const closeAddressModel = () => {
     setOrderAddress({
-      isOpen:false,
-      address:IntialAddress
+      isOpen: false,
+      address: IntialAddress,
     });
-  }
+  };
+
+  const closeItemsModel = () => {
+    setOrderItemsModel({
+      isOpen: false,
+      orderID: -1,
+    });
+  };
 
   const showAddress = (address: string) => {
     const addressObj = JSON.parse(address);
@@ -67,11 +83,34 @@ const MyOrder = () => {
     });
   };
 
+  const showItems = (orderID: number) => {
+    setOrderItemsModel({
+      isOpen: true,
+      orderID,
+    });
+  };
+
+  if(orderData.length===0){
+    return <h1>Loading...</h1>
+  }
+
   return (
     <Fragment>
       {orderAddress.isOpen && (
         <Model>
-          <AddressCard closeAddressModel={closeAddressModel} address={orderAddress.address} />
+          <AddressCard
+            closeAddressModel={closeAddressModel}
+            address={orderAddress.address}
+          />
+        </Model>
+      )}
+
+      {orderItemsModel?.isOpen && (
+        <Model>
+          <ItemsCard
+            closeItemsModel={closeItemsModel}
+            orderID={orderItemsModel.orderID}
+          />
         </Model>
       )}
 
@@ -98,13 +137,15 @@ const MyOrder = () => {
                       return (
                         <tr className="text-gray-700" key={index}>
                           <td className="px-4 py-3 border">
-                            {order.order_date}
+                            {getLocaleDate(order.order_date)}
                           </td>
                           <td className="px-4 py-3 text-ms font-semibold border">
-                            {order.total_amount}
+                            {getRs(order.total_amount)}
                           </td>
                           <td className="px-4 py-3 text-xs border">
-                            <span className={`${order.status}`}>
+                            <span
+                              className={`order-status-label ${order.status}`}
+                            >
                               {" "}
                               {order.status}{" "}
                             </span>
@@ -120,7 +161,12 @@ const MyOrder = () => {
                             </button>
                           </td>
                           <td className="px-4 py-3 text-sm border">
-                            <button className="bg-green-600 text-white px-3 py-2 rounded-md font-medium">
+                            <button
+                              onClick={() => {
+                                showItems(order.id);
+                              }}
+                              className="bg-green-600 text-white px-3 py-2 rounded-md font-medium"
+                            >
                               show items
                             </button>
                           </td>
