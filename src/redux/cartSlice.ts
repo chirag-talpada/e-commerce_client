@@ -42,9 +42,8 @@ export const addToCart = createAsyncThunk("cart/addProduct", async (product:cart
   } catch (err) {
     if(axios.isAxiosError(err)){
       toast.error(err.response?.data.message)
+      return rejectWithValue(err.response?.data.message);
     }
-    console.log(err);
-    return err;
   }
 });
 
@@ -146,3 +145,7 @@ const cartSlice = createSlice({
 
 export const { resetCart } = cartSlice.actions;
 export default cartSlice.reducer;
+
+function rejectWithValue(arg0: string): any {
+  throw new Error("Function not implemented.");
+}

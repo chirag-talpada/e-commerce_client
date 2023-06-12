@@ -2,10 +2,10 @@ import React, { Fragment, useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { productData } from "../redux/productSlice";
+import {  productData } from "../redux/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
-import { addToCart } from "../redux/cartSlice";
+import { addToCart, getCartProducts } from "../redux/cartSlice";
 import { toast } from "react-toastify";
 
 const ProductPage = () => {
@@ -28,7 +28,14 @@ const ProductPage = () => {
         setIsCartProduct(false);
       }
     }
-  }, [id, cart]);
+  }, [id, cart,dispatch]);
+
+  useEffect(()=>{
+    if(user.isLoggedIn && cart.items.length===0){
+      dispatch(getCartProducts())
+    }
+  },[cart.items, dispatch, user.isLoggedIn]);
+
 
   useEffect(() => {
     function init() {
@@ -52,7 +59,7 @@ const ProductPage = () => {
     if (!user.isLoggedIn) {
       navigate("/signin");
     }
-    setIsCartProduct(true);
+    
     if (user.isLoggedIn) {
       dispatch(addToCart({ id, quantity: quantity }));
     }

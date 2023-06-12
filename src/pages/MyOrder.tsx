@@ -124,6 +124,7 @@ const MyOrder = () => {
               <table className="w-full">
                 <thead>
                   <tr className="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase border-b border-gray-600">
+                    <th className="px-4 py-3">Order ID</th>
                     <th className="px-4 py-3">Order Date</th>
                     <th className="px-4 py-3">Total Amount</th>
                     <th className="px-4 py-3">Status</th>
@@ -136,6 +137,9 @@ const MyOrder = () => {
                     orderData.map((order, index) => {
                       return (
                         <tr className="text-gray-700" key={index}>
+                          <td className="px-4 py-3 border">
+                            {order.id}
+                          </td>
                           <td className="px-4 py-3 border">
                             {getLocaleDate(order.order_date)}
                           </td>
